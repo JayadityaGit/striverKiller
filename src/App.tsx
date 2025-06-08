@@ -259,8 +259,19 @@ const Index: React.FC = () => {
             ) : (
               <div className="bg-white/10 backdrop-blur-xl border border-white/20 px-8 py-4 rounded-lg flex items-center gap-6 shadow-2xl">
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg">
-                    <span className="text-black font-bold text-lg">{user.displayName?.charAt(0) || "U"}</span>
+                  <div className="w-12 h-12 rounded-full flex items-center justify-center shadow-lg overflow-hidden">
+                    {user.photoURL ? (
+                      <img
+                        src={user.photoURL}
+                        alt="Profile"
+                        className="w-full h-full object-cover"
+                        referrerPolicy="no-referrer"
+                      />
+                    ) : (
+                      <span className="text-black font-bold text-lg bg-white w-full h-full flex items-center justify-center">
+                        {user.displayName?.charAt(0) || user.email?.charAt(0) || "U"}
+                      </span>
+                    )}
                   </div>
                   <div>
                     <div className="text-white font-bold text-lg">Welcome, {user.displayName || "User"}</div>
@@ -561,9 +572,9 @@ const Index: React.FC = () => {
           </div>
         </footer>
       </div>
-      
+
       <Analytics />
-    
+
     </div>
   )
 }
