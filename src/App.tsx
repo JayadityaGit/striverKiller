@@ -418,7 +418,7 @@ const Index: React.FC = () => {
                   {!isCollapsed && (
                     <div className="border-t border-white/10">
                       <div className="p-6 space-y-3">
-                        {filteredProblems.map((problem, probIdx) => {
+                        {filteredProblems.map((problem) => {
                           const originalIndex = step.problems.findIndex((p) => p.title === problem.title)
                           const problemKey = getProblemKey(idx, originalIndex)
                           const isChecked = checked[problemKey] || false
