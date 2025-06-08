@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import { signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth"
 import type { User } from "firebase/auth"
 import { doc, setDoc, getDoc } from "firebase/firestore"
+import { Analytics } from "@vercel/analytics/next"
 
 import SearchInput from "./components/SearchInput"
 import DifficultyFilter from "./components/DifficultyFilter"
@@ -558,6 +559,7 @@ const Index: React.FC = () => {
           </div>
         </footer>
       </div>
+      <Analytics />
     </div>
   )
 }
