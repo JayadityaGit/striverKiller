@@ -14,6 +14,8 @@ import { auth, db, provider } from "./firebase"
 // This path should be relative to your current file (Index.tsx)
 import problemsData from "./data/data.json"
 
+import { Analytics } from "@vercel/analytics/next"
+
 // Problem and Step types
 type Problem = {
   title: string
@@ -559,6 +561,8 @@ const Index: React.FC = () => {
           </div>
         </footer>
       </div>
+      
+      <Analytics />
     
     </div>
   )
