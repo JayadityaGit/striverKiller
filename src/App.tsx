@@ -9,16 +9,21 @@ import DifficultyFilter from "./components/DifficultyFilter"
 import gokuImage from "./photos/goku.jpg"
 import { auth, db, provider } from "./firebase"
 
+// ✨ NEW: Import the JSON data directly
+// This path should be relative to your current file (Index.tsx)
+import problemsData from "./data/data.json"
+
 // Problem and Step types
 type Problem = {
   title: string
-  url?: string
-  practice?: string
-  revision?: string
-  difficulty?: string
-  solve?: string // Added solve field
-  resource?: string // Added resource field
-  note?: string // Added note field
+  // ✨ FIX: Add 'null' to types for properties that might be null in JSON
+  url?: string | null
+  practice?: string | null
+  revision?: string | null
+  difficulty?: string // Assuming difficulty is always a string if present, or undefined
+  solve?: string | null
+  resource?: string | null
+  note?: string | null
 }
 
 type Step = {
@@ -52,27 +57,18 @@ const Index: React.FC = () => {
     return () => unsub()
   }, [])
 
-  // Fetch problems data
+  // Load problems data from direct import
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true)
-        setError(null)
-        const response = await fetch("/src/data/data.json")
-        if (!response.ok) {
-          throw new Error("Failed to fetch data")
-        }
-        const json = await response.json()
-        setData(json)
-      } catch (err) {
-        setError("Failed to load problems data. Please try again.")
-        console.error("Error fetching data:", err)
-      } finally {
-        setLoading(false)
-      }
+    try {
+      // The problemsData is already imported, so we just set it
+      // No longer need to assert type explicitly here if Problem type is correct
+      setData(problemsData as Step[]) // Type assertion might still be useful as a safeguard or if the JSON structure is very complex
+      setLoading(false)
+    } catch (err) {
+      setError("Failed to load problems data. Please try again.")
+      console.error("Error loading data from import:", err)
+      setLoading(false)
     }
-
-    fetchData()
   }, [])
 
   // Load checked problems from Firestore
@@ -244,9 +240,7 @@ const Index: React.FC = () => {
           <div className="text-center mb-8">
             <div className="mb-6">
               <h1 className="text-5xl md:text-7xl font-black text-white mb-4 tracking-wider">GOONIE TRACKER</h1>
- 
             </div>
-
           </div>
 
           {/* Enhanced Auth Section */}
@@ -410,7 +404,6 @@ const Index: React.FC = () => {
                           <span className="text-sm text-gray-400 font-medium">{Math.round(progressPercentage)}%</span>
                         </div>
                       </div>
-
                     </div>
                   </div>
 
@@ -436,8 +429,9 @@ const Index: React.FC = () => {
                             }
                           }
 
-                          const renderLink = (href: string | undefined, text: string, icon: string) => {
-                            if (!href) return null;
+                          const renderLink = (href: string | undefined | null, text: string, icon: string) => {
+                            // Check for both undefined and null
+                            if (!href) return null
                             return (
                               <a
                                 href={href}
@@ -460,8 +454,8 @@ const Index: React.FC = () => {
                                 )}
                                 <span className="hidden sm:inline">{text}</span>
                               </a>
-                            );
-                          };
+                            )
+                          }
 
                           return (
                             <div
